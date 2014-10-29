@@ -34,6 +34,18 @@ var request = require('request').defaults({
 
 // var YaBossClient = new YaBoss(YAHOO_CONSUMER_KEY, YAHOO_CONSUMER_SECRET);
 // YaBossClient.search('web','yahoo', {count: 10}, function(err,dataFound,response){console.log(dataFound)});
+var Bing 			= require('binger');
+
+app.locals.title = 'Trabalho Recuperação de Informação';
+
+var CONSUMER_KEY = "dj0yJmk9SThxdXJWVGJQZlBJJmQ9WVdrOWVVbERUVVJMTkc4bWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD01MQ--";
+var CONSUMER_SECRET = "ae5264ca12071cd2210080dd9c4439fcb59b2b35";
+
+var BING_ACCOUNT_KEY = "ni0yREhySwwi5aZNHUGRAfq7gk8F3XEylaezjilmfjg";
+var BING_COSTUMER_ID = "6f229689-b777-4409-bc0d-5a1e68a689e0";
+
+var YaBossClient = new YaBoss(CONSUMER_KEY, CONSUMER_SECRET);
+YaBossClient.search('web','yahoo', {count: 10}, function(err,dataFound,response){console.log(dataFound)});
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST

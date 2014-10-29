@@ -12,18 +12,17 @@
     "express-session"     : "latest",
     "async"               : "latest",
     "domain"              : "latest",
-    "fs"                  : "latest"
+    "fs"                  : "latest",
+    "yaboss"              : "^0.1.2"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-
   "scripts" : {
     "start": "node server.js"
   },
-
   "author": "",
   "license": "ISC"
 }
