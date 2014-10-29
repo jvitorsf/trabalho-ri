@@ -12,30 +12,51 @@ var session 		= require('express-session');
 var async 			= require('async');
 var domain 			= require("domain").create();
 var YaBoss 			= require('yaboss');
-var Bing 			= require('binger');
 
 app.locals.title = 'Trabalho Recuperação de Informação';
 
-var CONSUMER_KEY = "dj0yJmk9SThxdXJWVGJQZlBJJmQ9WVdrOWVVbERUVVJMTkc4bWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD01MQ--";
-var CONSUMER_SECRET = "ae5264ca12071cd2210080dd9c4439fcb59b2b35";
+var YAHOO_CONSUMER_KEY = "dj0yJmk9SThxdXJWVGJQZlBJJmQ9WVdrOWVVbERUVVJMTkc4bWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD01MQ--";
+var YAHOO_CONSUMER_SECRET = "ae5264ca12071cd2210080dd9c4439fcb59b2b35";
 
 var BING_ACCOUNT_KEY = "ni0yREhySwwi5aZNHUGRAfq7gk8F3XEylaezjilmfjg";
 var BING_COSTUMER_ID = "6f229689-b777-4409-bc0d-5a1e68a689e0";
+var BING_CLIENT_SECRET = "N0bc6Sk75t8Nmzal3fR2Hw5Po9UZcdHX0slE0L0zPns=";
 
-var YaBossClient = new YaBoss(CONSUMER_KEY, CONSUMER_SECRET);
-YaBossClient.search('web','yahoo', {count: 10}, function(err,dataFound,response){console.log(dataFound)});
+var service_op  = "Web?$format=json&Query=";
+var rootUri = 'https://api.datamarket.azure.com/Bing/Search/Web?$format=json&Query=';
+var auth    = new Buffer([ BING_ACCOUNT_KEY, BING_ACCOUNT_KEY ].join(':')).toString('base64');
 
-var bing = new Bing({appId:BING_COSTUMER_ID})
-bing.search("MooTools", function(error, response, body){
+var request = require('request').defaults({
+  headers : {
+    'Authorization' : 'Basic ' + auth
+  }
+});
 
-     console.log(error);
-
-},{limit: 1})
+// var YaBossClient = new YaBoss(YAHOO_CONSUMER_KEY, YAHOO_CONSUMER_SECRET);
+// YaBossClient.search('web','yahoo', {count: 10}, function(err,dataFound,response){console.log(dataFound)});
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser());
 
+// here's how to perform a query:
+	app.post('/bing', function(req, res) {
+		var query       = req.body.query;
+		request.get({
+		url : rootUri,
+		qs  : {
+			$format : 'json',
+			Query   : "'" + query + "'", // the single quotes are required!
+		}
+		}, function(err, response, body) {
+		if (err)
+			return res.send(500, err.message);
+		if (response.statusCode !== 200)
+			return res.send(500, response.body);
+		var results = JSON.parse(response.body);
+		res.send(results.d.results);
+	});
+});
 
 var port 				= process.env.PORT || 8080;  // set our port
 var server_port 		= process.env.OPENSHIFT_NODEJS_PORT || 8080

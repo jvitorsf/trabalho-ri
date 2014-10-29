@@ -4,13 +4,26 @@
   "description": "ri",
   "main": "server.js",
   "dependencies": {
-    "yaboss": "^0.1.2"
+    "request"             : "^2.47.0",
+    "yaboss"              : "^0.1.2",
+    "express"             : "latest",
+    "body-parser"         : "latest",
+    "cookie-parser"       : "latest",
+    "express-session"     : "latest",
+    "async"               : "latest",
+    "domain"              : "latest",
+    "fs"                  : "latest"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
+
+  "scripts" : {
+    "start": "node server.js"
+  },
+
   "author": "",
   "license": "ISC"
 }
