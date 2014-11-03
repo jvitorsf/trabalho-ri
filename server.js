@@ -12,6 +12,8 @@ var session 		= require('express-session');
 var async 			= require('async');
 var domain 			= require("domain").create();
 var YaBoss 			= require('yaboss');
+var google          = require('google');
+
 
 app.locals.title = 'Trabalho Recuperação de Informação';
 
@@ -88,6 +90,35 @@ app.use(bodyParser());
 			res.send(results);
 		});
 	});
+
+
+app.post('/google', function(req, res) {
+	var google = require('google');
+
+	google.resultsPerPage = 25;
+	var nextCounter = 0;
+
+	google('node.js best practices', function(err, next, links){
+	  if (err) console.error(err);
+	  qs :
+	  {
+	  	$format : 'json',
+	  	Query: ""
+	  }
+	  for (var i = 0; i < links.length; ++i) {
+
+	    console.log(links[i].title + ' - ' + links[i].link); //link.href is an alias for link.link
+	    console.log(links[i].description + "\n");
+	  }
+
+	  if (nextCounter < 4) {
+	    nextCounter += 1;
+	    if (next) next();
+	  }
+
+	});
+});
+
 
 var port 				= process.env.PORT || 8080;  // set our port
 var server_port 		= process.env.OPENSHIFT_NODEJS_PORT || 8080
