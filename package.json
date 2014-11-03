@@ -4,25 +4,20 @@
   "description": "ri",
   "main": "server.js",
   "dependencies": {
-    "request"             : "^2.47.0",
-    "yaboss"              : "^0.1.2",
-    "express"             : "latest",
-    "body-parser"         : "latest",
-    "cookie-parser"       : "latest",
-    "express-session"     : "latest",
-    "async"               : "latest",
-    "domain"              : "latest",
-    "google"              : "^0.6.0",
-    "fs"                  : "latest",
-    "yaboss"              : "^0.1.2"
-
+    "async": "latest",
+    "body-parser": "latest",
+    "cookie-parser": "latest",
+    "domain": "latest",
+    "express": "latest",
+    "express-session": "latest",
+    "fs": "latest",
+    "google": "^0.6.0",
+    "merge": "^1.2.0",
+    "request": "^2.47.0",
+    "yaboss": "^0.1.2"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "scripts" : {
     "start": "node server.js"
   },
   "author": "",
