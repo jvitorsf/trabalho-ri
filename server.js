@@ -106,8 +106,6 @@ app.post('/google', function(req, res) {
 
 	  res.send(links);
 
-	}, function(e){
-		console.log("terminei");
 	});
 });
 
