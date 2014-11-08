@@ -56,15 +56,64 @@ var BING_COSTUMER_ID = "6f229689-b777-4409-bc0d-5a1e68a689e0";
 // this will let us get the data from a POST
 app.use(bodyParser());
 
+app.post('/search', function(req, res) {
+	var query       = req.body.query;
+	var result = {};
+	result['bing'] = [];
+	result['google'] = [];
+
+	async.parallel([
+		
+		function(callbackGoogle){
+			var google = require('google');
+
+			google.resultsPerPage = 25;
+			var nextCounter = 0;
+
+			google(query, function(err, next, links){
+			  if (err){
+			  	console.error(err);
+			  	callbackGoogle();
+			  }else{
+				result['google'] = links;
+				callbackGoogle();
+			  }
+			}, function(){
+				callbackGoogle();
+			});
+		},
+
+		function(callbackBing){
+			request.get({
+			url : bingUri,
+			qs  : {
+				$format : 'json',
+				Query   : "'" + query + "'", // the single quotes are required!
+			}
+			}, function(err, response, body) {
+				var response = JSON.parse(response.body);
+				result['bing'] = response.d.results;
+				callbackBing();
+			}, function(){
+				callbackBing();
+			});
+		}
+
+
+	], function(){
+		res.json(result);
+	})
+});
+
 // here's how to perform a query:
 	app.post('/bing', function(req, res) {
 		var query       = req.body.query;
 		request.get({
-		url : bingUri,
-		qs  : {
-			$format : 'json',
-			Query   : "'" + query + "'", // the single quotes are required!
-		}
+			url : bingUri,
+			qs  : {
+				$format : 'json',
+				Query   : "'" + query + "'", // the single quotes are required!
+			}
 		}, function(err, response, body) {
 			if (err)
 				return res.send(500, err.message);
@@ -93,20 +142,7 @@ app.use(bodyParser());
 
 
 app.post('/google', function(req, res) {
-	var google = require('google');
-	var response = {};
-	response["results"] = [];
-	aux = {};
-
-	google.resultsPerPage = 25;
-	var nextCounter = 0;
-
-	google('node.js best practices', function(err, next, links){
-	  if (err) console.error(err);
-
-	  res.send(links);
-
-	});
+	
 });
 
 
